@@ -1,24 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { 
-  Brain, 
-  Clock, 
-  RotateCcw, 
-  HelpCircle, 
-  Pause, 
-  Keyboard, 
+import {
+  Brain,
+  Clock,
+  RotateCcw,
+  HelpCircle,
+  Pause,
+  Keyboard,
   MousePointer2,
   Activity,
   ChevronRight,
   Info
 } from 'lucide-react';
-import { 
-  BarChart, 
-  Bar, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
   ResponsiveContainer,
   RadarChart,
   PolarGrid,
@@ -44,7 +44,7 @@ function App() {
   const handlePredict = async () => {
     setLoading(true);
     try {
-      const response = await axios.post('http://localhost:8000/predict', formData);
+      const response = await axios.post('https://cognoload-ai.onrender.com/predict', formData);
       setPrediction(response.data);
     } catch (error) {
       console.error("Prediction failed:", error);
@@ -86,15 +86,15 @@ function App() {
               <Activity size={20} className="text-blue-400" />
               Learning Behavior Signals
             </h2>
-            
+
             <div className="flex flex-col gap-4">
               <div className="flex flex-col gap-1">
                 <label className="text-sm text-secondary flex items-center gap-2">
                   <Brain size={14} /> Problem Difficulty
                 </label>
-                <select 
+                <select
                   value={formData.problem_difficulty}
-                  onChange={(e) => setFormData({...formData, problem_difficulty: parseInt(e.target.value)})}
+                  onChange={(e) => setFormData({ ...formData, problem_difficulty: parseInt(e.target.value) })}
                 >
                   <option value={0}>Easy</option>
                   <option value={1}>Medium</option>
@@ -115,19 +115,19 @@ function App() {
                     <span className="flex items-center gap-2">{field.icon} {field.label}</span>
                     <span className="text-blue-400 font-mono">{formData[field.key]}</span>
                   </label>
-                  <input 
+                  <input
                     type="range"
                     min={field.min}
                     max={field.max}
                     value={formData[field.key]}
-                    onChange={(e) => setFormData({...formData, [field.key]: parseFloat(e.target.value)})}
+                    onChange={(e) => setFormData({ ...formData, [field.key]: parseFloat(e.target.value) })}
                     className="cursor-pointer"
                   />
                 </div>
               ))}
             </div>
 
-            <button 
+            <button
               onClick={handlePredict}
               disabled={loading}
               className="btn-primary w-full mt-8 flex items-center justify-center gap-2"
@@ -150,16 +150,15 @@ function App() {
               <h3 className="text-secondary text-sm uppercase tracking-widest mb-4">Predicted Cognitive Load</h3>
               {prediction ? (
                 <>
-                  <div className={`text-6xl font-black mb-4 ${
-                    prediction.prediction === 'LOW' ? 'text-green-500' :
-                    prediction.prediction === 'MEDIUM' ? 'text-yellow-500' : 'text-red-500'
-                  }`}>
+                  <div className={`text-6xl font-black mb-4 ${prediction.prediction === 'LOW' ? 'text-green-500' :
+                      prediction.prediction === 'MEDIUM' ? 'text-yellow-500' : 'text-red-500'
+                    }`}>
                     {prediction.prediction}
                   </div>
                   <div className="load-badge glass">
                     Confidence: {(prediction.confidence * 100).toFixed(1)}%
                   </div>
-                  
+
                   <div className="mt-8 w-full text-left">
                     <h4 className="text-xs font-bold text-secondary flex items-center gap-2 mb-3">
                       <Info size={12} /> KEY REASONS
@@ -205,23 +204,23 @@ function App() {
           <div className="glass p-6 mt-auto">
             <h4 className="text-xs font-bold text-secondary uppercase tracking-widest mb-4">ML Insights</h4>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-               <div className="px-4 py-3 rounded-lg border border-white/5 bg-white/2">
-                  <p className="text-[10px] text-secondary">Random Forest</p>
-                  <p className="font-mono text-sm">{prediction?.prediction || '--'}</p>
-               </div>
-               <div className="px-4 py-3 rounded-lg border border-white/5 bg-white/2">
-                  <p className="text-[10px] text-secondary">Neural Network</p>
-                  <p className="font-mono text-sm">{prediction?.nn_prediction || '--'}</p>
-               </div>
-               <div className="px-4 py-3 rounded-lg border border-white/5 bg-white/2">
-                  <p className="text-[10px] text-secondary">Response Time</p>
-                  <p className="font-mono text-sm">~42ms</p>
-               </div>
+              <div className="px-4 py-3 rounded-lg border border-white/5 bg-white/2">
+                <p className="text-[10px] text-secondary">Random Forest</p>
+                <p className="font-mono text-sm">{prediction?.prediction || '--'}</p>
+              </div>
+              <div className="px-4 py-3 rounded-lg border border-white/5 bg-white/2">
+                <p className="text-[10px] text-secondary">Neural Network</p>
+                <p className="font-mono text-sm">{prediction?.nn_prediction || '--'}</p>
+              </div>
+              <div className="px-4 py-3 rounded-lg border border-white/5 bg-white/2">
+                <p className="text-[10px] text-secondary">Response Time</p>
+                <p className="font-mono text-sm">~42ms</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      
+
       <style>{`
         .flex { display: flex; }
         .flex-col { flex-direction: column; }
